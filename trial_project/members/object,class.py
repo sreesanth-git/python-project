@@ -36,9 +36,18 @@
 # d1.watch()
 
 
-class book:
-    def read(self):
-        print("I am Reading")
+# class book:
+#     def read(self):
+#         print("I am Reading")
 
-d1 = book()
-d1.read()
+# d1 = book()
+# d1.read()
+
+class person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+p1 = person("unnikuttan", 19)
+print(p1.name)
+print(p1.age)
