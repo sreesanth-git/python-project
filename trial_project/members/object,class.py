@@ -43,11 +43,23 @@
 # d1 = book()
 # d1.read()
 
-class person:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
+# class person:
+#     def __init__(self, name, age):
+#         self.name = name
+#         self.age = age
 
-p1 = person("unnikuttan", 19)
-print(p1.name)
-print(p1.age)
+# p1 = person("unnikuttan", 19)
+# print(p1.name)
+# print(p1.age)
+
+
+class person:
+    def __init__(self, name):
+        self.name = name
+
+    def greet(self):
+        print("Hello , my name is " + self.name)
+
+p1 = person("Unnikuttan kir")
+p1.greet()
+      
