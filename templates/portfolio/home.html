@@ -12,7 +12,10 @@
     <header class="site-header">
         <a class="brand" href="#top">
             <img src="{% static 'img/project-x-logo.svg' %}" alt="" class="brand-logo">
-            <span>{{ name }}</span>
+            <span>
+                {{ name }}
+                <small>Web Studio</small>
+            </span>
         </a>
         <div class="header-actions">
             <div class="theme-switcher" aria-label="Theme switcher">
@@ -27,49 +30,112 @@
             </button>
             <nav class="site-nav" aria-label="Main navigation">
                 <a href="#about">About</a>
+                <a href="#services">Services</a>
                 <a href="#projects">Projects</a>
+                <a href="#process">Process</a>
                 <a href="#contact">Contact</a>
+                {% if user.is_authenticated %}
+                    <a class="nav-action" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a class="nav-action" href="{% url 'signup' %}">Sign Up</a>
+                {% endif %}
             </nav>
         </div>
     </header>
 
     <main id="top">
+        {% if messages %}
+            <div class="message-stack" aria-live="polite">
+                {% for message in messages %}
+                    <p class="flash-message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <section class="hero section">
             <div class="hero-copy">
-                <p class="eyebrow">Simple Django websites for bold ideas</p>
+                <p class="eyebrow">Project X Web Studio</p>
                 <h1>{{ role }}</h1>
                 <p class="hero-text">
-                    Project X builds simple, useful web experiences with Django on the backend
-                    and clean, responsive interfaces on the frontend.
+                    Project X designs and builds polished Django websites with clean branding,
+                    smooth user flows, secure authentication, and responsive interfaces that feel ready for real clients.
                 </p>
                 <div class="hero-actions">
                     <a class="button primary" href="#projects">View Projects</a>
-                    <a class="button secondary" href="#contact">Contact Me</a>
+                    <a class="button secondary" href="#services">Explore Services</a>
+                </div>
+                <div class="metric-row" aria-label="Project X highlights">
+                    {% for metric in metrics %}
+                        <div>
+                            <strong>{{ metric.value }}</strong>
+                            <span>{{ metric.label }}</span>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="profile-panel" aria-label="Portfolio summary">
-                <img src="{% static 'img/project-x-logo.svg' %}" alt="Project X logo" class="profile-logo">
-                <p class="panel-title">{{ name }}</p>
-                <p>Backend-focused web studio creating practical Django apps from idea to localhost.</p>
+                {% if user.is_authenticated %}
+                    <div class="user-avatar" aria-hidden="true">{{ user.username|first|upper }}</div>
+                    <p class="panel-kicker">Signed in as</p>
+                    <p class="panel-title">{{ user.username }}</p>
+                    <dl class="user-profile">
+                        <div>
+                            <dt>Status</dt>
+                            <dd>Active member</dd>
+                        </div>
+                        <div>
+                            <dt>Joined</dt>
+                            <dd>{{ user.date_joined|date:"M d, Y" }}</dd>
+                        </div>
+                        <div>
+                            <dt>Account</dt>
+                            <dd>{{ user.email|default:"Email not added" }}</dd>
+                        </div>
+                    </dl>
+                    <a class="button secondary profile-action" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <img src="{% static 'img/project-x-logo.svg' %}" alt="Project X logo" class="profile-logo">
+                    <p class="panel-title">{{ name }}</p>
+                    <p>Backend-focused web studio creating practical Django apps, branded interfaces, and polished auth experiences.</p>
+                    <a class="button secondary profile-action" href="{% url 'login' %}">Login to View Profile</a>
+                {% endif %}
             </div>
         </section>
 
         <section class="section split" id="about">
             <div>
                 <p class="eyebrow">About</p>
-                <h2>Clean code, clear pages, useful results.</h2>
+                <h2>Clean code, clear pages, and a brand that feels intentional.</h2>
             </div>
             <div>
                 <p>
-                    Project X is a simple portfolio brand powered by Python Django and regular
-                    HTML, CSS, and JavaScript. It is designed for clean project showcases,
-                    quick contact, and local development.
+                    Project X is a professional portfolio brand powered by Python Django,
+                    WAMP MySQL, HTML, CSS, and JavaScript. The site is built for project showcases,
+                    account creation, profile previews, and a smooth presentation that can grow into
+                    a real web studio presence.
                 </p>
                 <div class="skills">
                     {% for skill in skills %}
                         <span>{{ skill }}</span>
                     {% endfor %}
                 </div>
+            </div>
+        </section>
+
+        <section class="section" id="services">
+            <div class="section-heading">
+                <p class="eyebrow">Services</p>
+                <h2>What Project X can build.</h2>
+            </div>
+            <div class="service-grid">
+                {% for service in services %}
+                    <article class="service-card">
+                        <span>0{{ forloop.counter }}</span>
+                        <h3>{{ service.title }}</h3>
+                        <p>{{ service.description }}</p>
+                    </article>
+                {% endfor %}
             </div>
         </section>
 
@@ -93,9 +159,33 @@
             </div>
         </section>
 
+        <section class="section process-section" id="process">
+            <div class="section-heading">
+                <p class="eyebrow">Process</p>
+                <h2>A simple build path from idea to working website.</h2>
+            </div>
+            <div class="process-grid">
+                {% for item in process %}
+                    <article class="process-card">
+                        <span>{{ item.step }}</span>
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.description }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
         <section class="section contact" id="contact">
             <p class="eyebrow">Contact</p>
-            <h2>Let Project X build something useful.</h2>
+            <h2>Let Project X build something useful, branded, and easy to use.</h2>
+            <div class="contact-actions">
+                <a class="button primary" href="mailto:{{ email }}">Start a Project</a>
+                {% if user.is_authenticated %}
+                    <a class="button secondary" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a class="button secondary" href="{% url 'signup' %}">Create Account</a>
+                {% endif %}
+            </div>
             <p>Email: <a href="mailto:{{ email }}">{{ email }}</a></p>
             <p>GitHub: <a href="https://{{ github }}/" target="_blank" rel="noreferrer">{{ github }}</a></p>
         </section>
