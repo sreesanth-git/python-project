@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }} | Portfolio</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/main.js' %}" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="#top">
+            <img src="{% static 'img/project-x-logo.svg' %}" alt="" class="brand-logo">
+            <span>{{ name }}</span>
+        </a>
+        <div class="header-actions">
+            <div class="theme-switcher" aria-label="Theme switcher">
+                <button class="theme-option active" type="button" data-theme="light">Light</button>
+                <button class="theme-option" type="button" data-theme="dark">Dark</button>
+                <button class="theme-option" type="button" data-theme="techy">Techy</button>
+            </div>
+            <button class="menu-button" type="button" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="top">
+        <section class="hero section">
+            <div class="hero-copy">
+                <p class="eyebrow">Simple Django websites for bold ideas</p>
+                <h1>{{ role }}</h1>
+                <p class="hero-text">
+                    Project X builds simple, useful web experiences with Django on the backend
+                    and clean, responsive interfaces on the frontend.
+                </p>
+                <div class="hero-actions">
+                    <a class="button primary" href="#projects">View Projects</a>
+                    <a class="button secondary" href="#contact">Contact Me</a>
+                </div>
+            </div>
+            <div class="profile-panel" aria-label="Portfolio summary">
+                <img src="{% static 'img/project-x-logo.svg' %}" alt="Project X logo" class="profile-logo">
+                <p class="panel-title">{{ name }}</p>
+                <p>Backend-focused web studio creating practical Django apps from idea to localhost.</p>
+            </div>
+        </section>
+
+        <section class="section split" id="about">
+            <div>
+                <p class="eyebrow">About</p>
+                <h2>Clean code, clear pages, useful results.</h2>
+            </div>
+            <div>
+                <p>
+                    Project X is a simple portfolio brand powered by Python Django and regular
+                    HTML, CSS, and JavaScript. It is designed for clean project showcases,
+                    quick contact, and local development.
+                </p>
+                <div class="skills">
+                    {% for skill in skills %}
+                        <span>{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="projects">
+            <div class="section-heading">
+                <p class="eyebrow">Projects</p>
+                <h2>Selected work</h2>
+            </div>
+            <div class="project-grid">
+                {% for project in projects %}
+                    <article class="project-card">
+                        <h3>{{ project.title }}</h3>
+                        <p>{{ project.description }}</p>
+                        <div class="tag-row">
+                            {% for tag in project.tags %}
+                                <span>{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="section contact" id="contact">
+            <p class="eyebrow">Contact</p>
+            <h2>Let Project X build something useful.</h2>
+            <p>Email: <a href="mailto:{{ email }}">{{ email }}</a></p>
+            <p>GitHub: <a href="https://{{ github }}/" target="_blank" rel="noreferrer">{{ github }}</a></p>
+        </section>
+    </main>
+</body>
+</html>
